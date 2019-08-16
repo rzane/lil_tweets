@@ -9,6 +9,7 @@ module Types
       argument :id, ID, required: true
     end
 
+    field :tweets_connection, TweetType.connection_type, null: false
     field :tweets, [TweetType], null: false
     field :tweet, TweetType, null: false do
       argument :id, ID, required: true
@@ -30,6 +31,7 @@ module Types
     def tweets
       Tweet.all
     end
+    alias tweets_connection tweets
 
     def tweet(id:)
       Tweet.find(id)

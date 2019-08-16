@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/models'
+
+users = [
+  User.create(name: "Ray", email: "ray@example.com"),
+  User.create(name: "Jess"),
+  User.create(name: "Guy Fierri")
+]
+
+20.times.map do |i|
+  tweet = Tweet.create(
+    message: "Tweet #{i}",
+    user: users.sample,
+    like_count: (1..1000).to_a.sample
+  )
+
+  (0..5).to_a.sample.times.map do |n|
+    Retweet.create(
+      message: "RT #{n}",
+      tweet: tweet,
+      user: users.sample
+    )
+  end
+end
