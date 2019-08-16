@@ -12,7 +12,7 @@ class GraphQLServer
     request = Rack::Request.new(env)
     payload = if request.get?
       request.params
-    else request.post?
+    else
       JSON.parse(request.body.read)
     end
 
