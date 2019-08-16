@@ -11,10 +11,12 @@ class Database
 
   def initialize
     @state = YAML.load_file(STORAGE) rescue {}
-    @state.default = {}
+    @state.default_proc = proc do |hash, key|
+      hash[key] = {}
+    end
   end
 
-  def query(model, conditions = {})
+  def query(model, conditions = {}, &block)
     @state[model.name].values.select do |record|
       conditions.all? do |key, value|
         record.send(key) == value
@@ -51,8 +53,8 @@ class Database
       Database.instance.query(self)
     end
 
-    def self.where(conditions = {})
-      Database.instance.query(self, conditions)
+    def self.where(conditions = {}, &block)
+      Database.instance.query(self, conditions, &block)
     end
 
     def self.find(id)

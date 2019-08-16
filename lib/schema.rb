@@ -53,6 +53,10 @@ module Types
       argument :data, TweetInput, required: true
     end
 
+    field :like_tweet, Integer, null: false do
+      argument :id, ID, required: true
+    end
+
     field :create_retweet, RetweetType, null: false do
       argument :data, RetweetInput, required: true
     end
@@ -63,6 +67,13 @@ module Types
 
     def create_tweet(data:)
       Tweet.create(data)
+    end
+
+    def like_tweet(id:)
+      tweet = Tweet.find(id)
+      tweet.like_count += 1
+      tweet.save
+      tweet.like_count
     end
 
     def create_retweet(data:)

@@ -1,8 +1,12 @@
+require 'graphql'
+
 module Types
   class UserType < GraphQL::Schema::Object
     field :id, ID, null: false
     field :name, String, null: true
     field :email, String, null: true
+    field :tweets, ['::Types::TweetType'], null: false
+    field :retweets, ['::Types::RetweetType'], null: false
   end
 
   class UserInput < GraphQL::Schema::InputObject
@@ -15,6 +19,7 @@ module Types
     field :message, String, null: false
     field :like_count, Integer, null: false
     field :user, UserType, null: false
+    field :retweets, ['::Types::RetweetType'], null: false
   end
 
   class TweetInput < GraphQL::Schema::InputObject
@@ -24,12 +29,14 @@ module Types
 
   class RetweetType < GraphQL::Schema::Object
     field :id, ID, null: false
-    field :message, String, null: false
     field :tweet, TweetType, null: false
+    field :user, UserType, null: false
+    field :message, String, null: true
   end
 
   class RetweetInput < GraphQL::Schema::InputObject
     argument :tweet_id, ID, required: true
     argument :user_id, ID, required: true
+    argument :message, String, required: false
   end
 end

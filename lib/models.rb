@@ -4,12 +4,20 @@ class User < Database::Model
   attr_accessor :name, :email
 
   def tweets
+    Tweet.where(user: self)
+  end
+
+  def retweets
     Retweet.where(user: self)
   end
 end
 
 class Tweet < Database::Model
   attr_accessor :message, :like_count, :user
+
+  def like_count
+    @like_count ||= 0
+  end
 
   def user_id=(user_id)
     self.user = User.find(user_id)
