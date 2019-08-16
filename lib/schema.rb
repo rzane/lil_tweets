@@ -24,7 +24,7 @@ module Types
       User.all
     end
 
-    def user
+    def user(id:)
       User.find(id)
     end
 
